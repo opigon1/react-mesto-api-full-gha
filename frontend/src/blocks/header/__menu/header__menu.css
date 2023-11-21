@@ -1,0 +1,24 @@
+.header__menu {
+  display: none;
+  padding: 0;
+  margin-top: 3px;
+  background-color: transparent;
+  width: 24px;
+  height: 21px;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 33px;
+  background-image: url(../../../images/header__burger.svg);
+  transition: all linear 0.2s;
+}
+.header__menu:hover {
+  opacity: 0.6;
+}
+
+@media screen and (max-width: 468px) {
+  .header__menu {
+    margin-right: 30px;
+    margin-left: auto;
+    display: block;
+  }
+}

@@ -1,0 +1,6 @@
+.popup__login-message_type_complete {
+  background-image: url(../../../../images/Successfully-icon.svg);
+  background-repeat: no-repeat;
+  background-size: 120px auto;
+  background-position: top center;
+}

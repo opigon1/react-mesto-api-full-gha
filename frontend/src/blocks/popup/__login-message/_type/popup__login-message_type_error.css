@@ -1,0 +1,6 @@
+.popup__login-message_type_error {
+  background-repeat: no-repeat;
+  background-size: 120px auto;
+  background-position: top center;
+  background-image: url(../../../../images/login-error-icon.svg);
+}
