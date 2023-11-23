@@ -145,7 +145,6 @@ module.exports.login = (req, res, next) => {
             httpOnly: true,
             sameSite: true,
             maxAge: 3600000 * 24 * 7,
-            secure: true,
           })
           .status(200)
           .send({
@@ -157,7 +156,6 @@ module.exports.login = (req, res, next) => {
       if (err.name === "ValidationError") {
         return next(
           new BAD_REQUEST("Поле email или password не должны быть пустыми")
-        );
       } else {
         return next(new UNAUTHORIZED("Передан неккоректный email"));
       }
