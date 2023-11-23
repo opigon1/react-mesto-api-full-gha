@@ -21,7 +21,7 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
     React.useState(false);
   const [infoMessage, setInfoMessage] = React.useState(null);
-  const [IsLogged, setIsLogged] = React.useState(false);
+  const [isLogged, setIsLogged] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
   const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
@@ -30,29 +30,27 @@ function App() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (IsLogged) {
+    if (isLogged) {
       api
         .getAllInfo()
         .then(([cardData, userData]) => {
-          setCurrentUser(userData);
-          setCards(cardData);
+          setCurrentUser(userData.data);
+          setCards(cardData.data);
         })
         .catch((err) => console.log(err));
     }
-  }, [IsLogged]);
+  }, [isLogged]);
 
   React.useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      checkToken(token)
-        .then((res) => {
-          setEmail(res.data.email);
-          setIsLogged(true);
-          navigate("/");
-        })
-        .catch((err) => console.log(err));
-    }
-  }, []);
+    checkToken()
+      .then((data) => {
+        console.log(data);
+        setEmail(data.email);
+        setIsLogged(true);
+        navigate("/");
+      })
+      .catch((err) => console.log(err));
+  }, [isLogged]);
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -81,53 +79,52 @@ function App() {
 
   function handleUpdateUser(data) {
     api
-      .editUserInfo(data)
-      .then((newData) => {
-        setCurrentUser(newData);
+      .editUserInfo({ name: data.name, about: data.about })
+      .then((res) => {
+        setCurrentUser(res.data);
         closeAllPopups();
       })
       .catch((err) => console.log(err));
   }
 
-  function handleUpdateAvatar({ avatar }) {
+  function handleUpdateAvatar(data) {
     api
-      .editUserAvatar(avatar)
-      .then((newData) => {
-        setCurrentUser(newData);
+      .editUserAvatar({ avatar: data.avatar })
+      .then((res) => {
+        setCurrentUser(res.data);
         closeAllPopups();
       })
       .catch(console.error);
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
-
+    const isLiked = card.likes.some((i) => i === currentUser._id);
     api
       .handleLikeCard(card._id, isLiked)
-      .then((newCard) => {
+      .then((res) => {
         setCards((state) =>
-          state.map((c) => (c._id === card._id ? newCard : c))
+          state.map((c) => (c._id === card._id ? res.data : c))
         );
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function handleCardDelete(card) {
-    const cardId = card._id;
-
     api
       .deleteCard(card._id)
       .then(() => {
-        setCards((state) => state.filter((card) => card._id !== cardId));
+        setCards((state) => state.filter((c) => c._id !== card._id));
       })
       .catch((res) => console.log(res));
   }
 
   function handleAddPlace(data) {
     api
-      .addCard(data)
+      .addCard({ name: data.name, link: data.link })
       .then((newCard) => {
-        setCards((cards) => [newCard, ...cards]);
+        setCards((cards) => [newCard.data, ...cards]);
         closeAllPopups();
       })
       .catch((err) => console.log(err));
@@ -143,6 +140,7 @@ function App() {
 
   function handleLogout() {
     localStorage.removeItem("token");
+    setEmail("");
     setIsLogged(true);
   }
 
@@ -161,7 +159,7 @@ function App() {
               cards={cards}
               onCardLike={handleCardLike}
               onCardDelete={handleCardDelete}
-              IsLogged={IsLogged}
+              isLogged={isLogged}
               email={email}
               onLogout={handleLogout}
             />

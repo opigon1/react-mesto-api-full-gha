@@ -145,6 +145,7 @@ module.exports.login = (req, res, next) => {
             httpOnly: true,
             sameSite: true,
             maxAge: 3600000 * 24 * 7,
+            secure: true,
           })
           .status(200)
           .send({

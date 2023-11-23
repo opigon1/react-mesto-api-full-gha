@@ -3,16 +3,26 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const { celebrate, Joi, errors } = require("celebrate");
+const cors = require("cors");
 const { login, createUser } = require("./controllers/users");
 const auth = require("./middlewares/auth");
 const errorHandler = require("./middlewares/errors");
 const NOT_FOUND = require("./utils/errors/NOT_FOUND");
-const cors = require("./middlewares/cors");
 
 const { PORT = 3000, DB_URL = "mongodb://127.0.0.1:27017/mestodb" } =
   process.env;
 const app = express();
-app.use(cors);
+app.use(
+  cors({
+    credentials: true,
+    origin: [
+      "http://localhost:3001",
+      "https://project.mesto.nomoredomainsmonster.ru/",
+      "http://project.mesto.nomoredomainsmonster.ru/",
+      "http://localhost:3000",
+    ],
+  })
+);
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
