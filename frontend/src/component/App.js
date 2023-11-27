@@ -135,7 +135,7 @@ function App() {
   }
 
   function handleLogin() {
-    setIsLogged(false);
+    setIsLogged(true);
   }
 
   function handleLogout() {

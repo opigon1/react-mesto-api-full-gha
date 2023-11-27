@@ -17,8 +17,8 @@ app.use(
     credentials: true,
     origin: [
       "http://localhost:3001",
-      "https://project.mesto.nomoredomainsmonster.ru/",
-      "http://project.mesto.nomoredomainsmonster.ru/",
+      "https://project.mesto.nomoredomainsmonster.ru",
+      "http://project.mesto.nomoredomainsmonster.ru",
       "http://localhost:3000",
     ],
   })

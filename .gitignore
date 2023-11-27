@@ -23,10 +23,10 @@ yarn-debug.log*
 yarn-error.log*
 # Logs
 logs
-*.log
+# *.log
 npm-debug.log*
-/backend/node_modules/middlewares/error.log
-/backend/node_modules/middlewares/request.log
+# /backend/node_modules/middlewares/error.log
+# /backend/node_modules/middlewares/request.log
 
 # Dependency directory
 /backend/node_modules
