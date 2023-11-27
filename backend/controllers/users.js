@@ -5,6 +5,7 @@ const BAD_REQUEST = require("../utils/errors/BAD_REQUEST");
 const NOT_FOUND = require("../utils/errors/NOT_FOUND");
 const CONFLICT = require("../utils/errors/CONFLICT");
 const UNAUTHORIZED = require("../utils/errors/UNAUTHORIZED");
+const { JWT_SECRET, NODE_ENV } = process.env;
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
@@ -137,9 +138,13 @@ module.exports.login = (req, res, next) => {
         if (!matched) {
           return next(new UNAUTHORIZED("Передан неккоректный пароль"));
         }
-        const token = jwt.sign({ _id: user._id }, "JWT_SECRET", {
-          expiresIn: "7d",
-        });
+        const token = jwt.sign(
+          { _id: user._id },
+          NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
+          {
+            expiresIn: "7d",
+          }
+        );
         res
           .cookie("jwt", token, {
             httpOnly: true,
