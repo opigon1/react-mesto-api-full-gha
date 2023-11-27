@@ -74,14 +74,13 @@ app.use("/cards", require("./routes/cards"));
 app.use("*", (req, res, next) => {
   return next(new NOT_FOUND("Страница не найдена"));
 });
+app.use(errorLogger);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(errors());
 app.use(errorHandler);
-app.use(errorLogger);
-
 app.listen(PORT, () => {
   console.log(`${PORT}`);
 });
