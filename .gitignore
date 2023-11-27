@@ -25,6 +25,8 @@ yarn-error.log*
 logs
 *.log
 npm-debug.log*
+/backend/node_modules/middlewares/error.log
+/backend/node_modules/middlewares/request.log
 
 # Dependency directory
 /backend/node_modules

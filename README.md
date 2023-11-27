@@ -26,7 +26,7 @@
 
 ## Ссылки на проект
 
-IP-адрес 51.250.37.229
+IP 51.250.37.229
 
 Frontend https://project.mesto.nomoredomainsmonster.ru
 
