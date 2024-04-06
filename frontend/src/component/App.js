@@ -21,7 +21,7 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] =
     React.useState(false);
   const [infoMessage, setInfoMessage] = React.useState(null);
-  const [isLogged, setIsLogged] = React.useState(false);
+  const [IsLogged, setIsLogged] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
   const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
@@ -30,27 +30,29 @@ function App() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (isLogged) {
+    if (IsLogged) {
       api
         .getAllInfo()
         .then(([cardData, userData]) => {
-          setCurrentUser(userData.data);
-          setCards(cardData.data);
+          setCurrentUser(userData);
+          setCards(cardData);
         })
         .catch((err) => console.log(err));
     }
-  }, [isLogged]);
+  }, [IsLogged]);
 
   React.useEffect(() => {
-    checkToken()
-      .then((data) => {
-        console.log(data);
-        setEmail(data.email);
-        setIsLogged(true);
-        navigate("/");
-      })
-      .catch((err) => console.log(err));
-  }, [isLogged]);
+    const token = localStorage.getItem("token");
+    if (token) {
+      checkToken(token)
+        .then((res) => {
+          setEmail(res.data.email);
+          setIsLogged(true);
+          navigate("/");
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [IsLogged, navigate]);
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -79,52 +81,53 @@ function App() {
 
   function handleUpdateUser(data) {
     api
-      .editUserInfo({ name: data.name, about: data.about })
-      .then((res) => {
-        setCurrentUser(res.data);
+      .editUserInfo(data)
+      .then((newData) => {
+        setCurrentUser(newData);
         closeAllPopups();
       })
       .catch((err) => console.log(err));
   }
 
-  function handleUpdateAvatar(data) {
+  function handleUpdateAvatar({ avatar }) {
     api
-      .editUserAvatar({ avatar: data.avatar })
-      .then((res) => {
-        setCurrentUser(res.data);
+      .editUserAvatar(avatar)
+      .then((newData) => {
+        setCurrentUser(newData);
         closeAllPopups();
       })
       .catch(console.error);
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i === currentUser._id);
+    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+
     api
       .handleLikeCard(card._id, isLiked)
-      .then((res) => {
+      .then((newCard) => {
         setCards((state) =>
-          state.map((c) => (c._id === card._id ? res.data : c))
+          state.map((c) => (c._id === card._id ? newCard : c))
         );
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => console.log(err));
   }
 
   function handleCardDelete(card) {
+    const cardId = card._id;
+
     api
       .deleteCard(card._id)
       .then(() => {
-        setCards((state) => state.filter((c) => c._id !== card._id));
+        setCards((state) => state.filter((card) => card._id !== cardId));
       })
       .catch((res) => console.log(res));
   }
 
   function handleAddPlace(data) {
     api
-      .addCard({ name: data.name, link: data.link })
+      .addCard(data)
       .then((newCard) => {
-        setCards((cards) => [newCard.data, ...cards]);
+        setCards((cards) => [newCard, ...cards]);
         closeAllPopups();
       })
       .catch((err) => console.log(err));
@@ -135,12 +138,11 @@ function App() {
   }
 
   function handleLogin() {
-    setIsLogged(false);
+    setIsLogged(true);
   }
 
   function handleLogout() {
     localStorage.removeItem("token");
-    setEmail("");
     setIsLogged(true);
   }
 
@@ -159,7 +161,7 @@ function App() {
               cards={cards}
               onCardLike={handleCardLike}
               onCardDelete={handleCardDelete}
-              isLogged={isLogged}
+              IsLogged={IsLogged}
               email={email}
               onLogout={handleLogout}
             />
@@ -173,7 +175,7 @@ function App() {
           path="/sign-in"
           element={
             <Login
-              handeShowInfoMessage={handleShowInfoMessage}
+            handleShowInfoMessage={handleShowInfoMessage}
               onLogin={handleLogin}
             />
           }

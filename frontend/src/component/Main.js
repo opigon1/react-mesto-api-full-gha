@@ -23,7 +23,7 @@ function Main({
   return (
     <>
       <Menu
-        email={currentUser.email}
+        email={email}
         onLogout={onLogout}
         active={menuActive}
         setActive={setMenuActive}
@@ -36,7 +36,7 @@ function Main({
           onClick={() => setMenuActive(!menuActive)}
         ></button>
         <div className="header__wrapper">
-          <p className="header__mail">{currentUser.email}</p>
+          <p className="header__mail">{email}</p>
           <Link
             to={"/sign-in"}
             className="header__link header__link_position_main"
@@ -49,7 +49,6 @@ function Main({
       <main className="main">
         <section className="profile">
           <div className="profile__avatar-cover" onClick={onEditAvatar}>
-            {/* {console.log(currentUser.avatar)} */}
             <img
               src={currentUser.avatar}
               alt="Аватарка"
@@ -57,7 +56,6 @@ function Main({
             />
           </div>
           <div className="profile__info">
-            {/* {console.log(currentUser.name)} */}
             <h1 className="profile__name">{currentUser.name}</h1>
             <p className="profile__status">{currentUser.about}</p>
             <button
@@ -74,16 +72,15 @@ function Main({
         </section>
         <section className="elements-section">
           <ul className="elements">
-            {Array.isArray(cards) &&
-              cards.map((card) => (
-                <Card
-                  card={card}
-                  onCardClick={onCardClick}
-                  key={card._id}
-                  onCardLike={onCardLike}
-                  onCardDelete={onCardDelete}
-                />
-              ))}
+            {cards.map((card) => (
+              <Card
+                card={card}
+                onCardClick={onCardClick}
+                key={card._id}
+                onCardLike={onCardLike}
+                onCardDelete={onCardDelete}
+              />
+            ))}
           </ul>
         </section>
       </main>

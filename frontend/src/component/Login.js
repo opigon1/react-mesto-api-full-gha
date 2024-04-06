@@ -18,7 +18,7 @@ function Login({ handleShowInfoMessage, onLogin }) {
   function handleSubmit(event) {
     event.preventDefault();
     authorize(inputs)
-      .then((res) => {
+      .then(() => {
         event.target.reset();
         onLogin();
         navigate("/");

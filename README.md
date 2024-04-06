@@ -1,7 +1,5 @@
 [![Статус тестов](../../actions/workflows/tests.yml/badge.svg)](../../actions/workflows/tests.yml)
 
-## Срок действия сервера истёк. (рабочая версия с сервером Яндекс.Практикума: <a href="https://github.com/opigon1/mesto-react-authorization">https://github.com/opigon1/mesto-react-authorization</a>)
-
 # react-mesto-api-full
 
 (Срок действия облочного сервера истёк)
@@ -23,7 +21,7 @@
 <li>NodeJS</li>
 </ul>
   
-Пожалуйста, прикрепите в это описание ссылку на сайт, размещенный на Яндекс.Облаке.
+
 
 Адрес репозитория: https://github.com/opigon1/react-mesto-api-full-gha
 
@@ -31,6 +29,6 @@
 
 IP 51.250.37.229
 
-Frontend https://project.mesto.nomoredomainsmonster.ru
+Frontend https://project.mesto.nomoredomainsmonster.ru (Срок действия истёк!)
 
-Backend https://api.project.mesto.nomoredomainsmonster.ru
+Backend https://api.project.mesto.nomoredomainsmonster.ru (Срок действия истёк!)
